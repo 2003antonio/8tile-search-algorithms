@@ -1,4 +1,4 @@
-<img width="173" alt="image" src="https://github.com/user-attachments/assets/fbd1a0d7-1fd7-41a8-bd8d-fbced8924906" />
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/fbd1a0d7-1fd7-41a8-bd8d-fbced8924906" />
 
 1. Implement BFS
 2. Implemented DFS
