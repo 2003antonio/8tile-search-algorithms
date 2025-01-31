@@ -81,3 +81,5 @@ if solution_path:
     print(f"Solution found at depth {solution_depth}! Nodes explored: {nodes_explored}")
 else:
     print(f"No solution exists. Nodes explored: {nodes_explored}")
+
+#code by antonio martinez, 1/31/2025
