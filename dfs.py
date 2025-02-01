@@ -71,7 +71,7 @@ def dfs(initial_state, goal_state):
     return None, None, nodes_explored  # No solution found
 
 
-initial_state = (1, 2, 3, 4, 0, 5, 6, 7, 8)  # initial state
+initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)  # initial state
 goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # goal state
 
 solution_path, solution_depth, nodes_explored = dfs(initial_state, goal_state)

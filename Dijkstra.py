@@ -80,7 +80,7 @@ def dijkstra(initial_state, goal_state):
     return None, nodes_explored  # No solution found
 
 # Initial and goal states
-initial_state = (1, 2, 3, 4, 0, 5, 6, 7, 8)  # Initial puzzle state
+initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)  # Initial puzzle state
 goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # Goal state
 
 # Run Dijkstra’s Algorithm
