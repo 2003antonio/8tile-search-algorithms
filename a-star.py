@@ -1,30 +1,27 @@
 import heapq
 
-
-# Function to find the position of the blank space (0)
+# function finds the position of the blank space (0)
 def find_blank(state):
     return state.index(0)
 
-
-# Function to swap two positions in the puzzle
+# function swaps the two positions in the puzzle
 def swap(state, pos1, pos2):
     state = list(state)
     state[pos1], state[pos2] = state[pos2], state[pos1]
     return tuple(state)
 
-
-# Function to generate all possible moves
+# function generates all possible moves
 def get_neighbors(state):
     neighbors = []
     blank_pos = find_blank(state)
     row, col = divmod(blank_pos, 3)  # Get row and column for the blank
 
-    # Possible moves: left, right, up, down
+    # possible moves: up, down, left, right
     moves = {
-        "left": (row, col - 1),
-        "right": (row, col + 1),
         "up": (row - 1, col),
-        "down": (row + 1, col)
+        "down": (row + 1, col),
+        "left": (row, col - 1),
+        "right": (row, col + 1)
     }
 
     for direction, (new_row, new_col) in moves.items():
@@ -33,7 +30,6 @@ def get_neighbors(state):
             neighbors.append(swap(state, blank_pos, new_blank_pos))
 
     return neighbors
-
 
 # Manhattan Distance Heuristic
 def manhattan_distance(state, goal_state):
@@ -45,7 +41,6 @@ def manhattan_distance(state, goal_state):
             current_row, current_col = divmod(i, 3)
             distance += abs(goal_row - current_row) + abs(goal_col - current_col)
     return distance
-
 
 # A* Search Algorithm
 def a_star(initial_state, goal_state):
@@ -72,7 +67,7 @@ def a_star(initial_state, goal_state):
             while current_state:
                 path.append(current_state)
                 current_state = parent_map[current_state]
-            return path[::-1], nodes_explored  # Return path and nodes explored
+            return path[::-1], current_cost, nodes_explored  # Return path, depth, and nodes explored
 
         visited.add(current_state)
 
@@ -91,15 +86,14 @@ def a_star(initial_state, goal_state):
                     parent_map[neighbor] = current_state
                     heapq.heappush(pq, (f_value, new_cost, neighbor))
 
-    return None, nodes_explored  # No solution found
-
+    return None, None, nodes_explored  # No solution found
 
 # Initial and goal states
 initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)  # Initial puzzle state
 goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # Goal state
 
 # Run A* Search
-solution_path, nodes_explored = a_star(initial_state, goal_state)
+solution_path, solution_depth, nodes_explored = a_star(initial_state, goal_state)
 
 # Print results
 if solution_path:
@@ -109,8 +103,8 @@ if solution_path:
         print(step[3:6])
         print(step[6:])
         print()
-    print(f"Solution found! Nodes explored: {nodes_explored}")
+    print(f"Solution found at depth {solution_depth}! Nodes explored: {nodes_explored}")
 else:
     print(f"No solution exists. Nodes explored: {nodes_explored}")
 
-#code by diana rivera, 1/31/2025
+# code by diana rivera, 1/31/2025

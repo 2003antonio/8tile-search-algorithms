@@ -44,9 +44,9 @@ def manhattan_distance(state, goal_state):
     return distance
 
 # Greedy Best-First Search Implementation
-def greedy_best_first_search(initial_state, goal_state):
+def gbfs(initial_state, goal_state):
     priority_queue = []
-    heappush(priority_queue, (manhattan_distance(initial_state, goal_state), initial_state))
+    heappush(priority_queue, (manhattan_distance(initial_state, goal_state), initial_state, 0))  # (heuristic, state, depth)
     visited = set()
     visited.add(initial_state)
     parent_map = {initial_state: None}
@@ -54,7 +54,7 @@ def greedy_best_first_search(initial_state, goal_state):
     nodes_explored = 0  # Counter for nodes explored
 
     while priority_queue:
-        _, current_state = heappop(priority_queue)
+        _, current_state, depth = heappop(priority_queue)
         nodes_explored += 1
 
         # Check if we reached the goal state
@@ -63,23 +63,23 @@ def greedy_best_first_search(initial_state, goal_state):
             while current_state:
                 path.append(current_state)
                 current_state = parent_map[current_state]
-            return path[::-1], nodes_explored  # Return path and nodes explored
+            return path[::-1], depth, nodes_explored  # Return path, depth, and nodes explored
 
         # Explore neighbors
         for neighbor in get_neighbors(current_state):
             if neighbor not in visited:
                 visited.add(neighbor)
-                heappush(priority_queue, (manhattan_distance(neighbor, goal_state), neighbor))
+                heappush(priority_queue, (manhattan_distance(neighbor, goal_state), neighbor, depth + 1))
                 parent_map[neighbor] = current_state
 
-    return None, nodes_explored  # No solution found
+    return None, None, nodes_explored  # No solution found
 
 # Initial and goal states
 initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)  # Initial puzzle state
 goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # Goal state
 
 # Run GBFS
-solution_path, nodes_explored = greedy_best_first_search(initial_state, goal_state)
+solution_path, solution_depth, nodes_explored = gbfs(initial_state, goal_state)
 
 # Print results
 if solution_path:
@@ -89,7 +89,7 @@ if solution_path:
         print(step[3:6])
         print(step[6:])
         print()
-    print(f"Solution found! Nodes explored: {nodes_explored}")
+    print(f"Solution found at depth {solution_depth}! Nodes explored: {nodes_explored}")
 else:
     print(f"No solution exists. Nodes explored: {nodes_explored}")
 
