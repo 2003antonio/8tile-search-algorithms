@@ -14,7 +14,7 @@ def swap(state, pos1, pos2):
 def get_neighbors(state):
     neighbors = []
     blank_pos = find_blank(state)
-    row, col = divmod(blank_pos, 3)  # Get row and column for the blank
+    row, col = divmod(blank_pos, 3)  # get row and column for the blank
 
     # possible moves: up, down, left, right
     moves = {
@@ -31,7 +31,7 @@ def get_neighbors(state):
 
     return neighbors
 
-# Manhattan Distance Heuristic
+# manhattan distance
 def manhattan_distance(state, goal_state):
     distance = 0
     for i in range(9):  # for each tile (0 to 8)
@@ -48,36 +48,36 @@ def a_star(initial_state, goal_state):
     pq = []
     heapq.heappush(pq, (0 + manhattan_distance(initial_state, goal_state), 0, initial_state))  # (f(n), g(n), state)
 
-    # Dictionaries to store g(n), f(n), and parent for path reconstruction
+    # dictionaries to store g(n), f(n), and parent for path reconstruction
     g_map = {initial_state: 0}  # g(n): cost to reach the state
-    parent_map = {initial_state: None}  # Parent map for path reconstruction
+    parent_map = {initial_state: None}  # parent map for path reconstruction
 
-    # Set to keep track of visited states
+    # set to keep track of visited states
     visited = set()
 
-    nodes_explored = 0  # Counter for nodes explored
+    nodes_explored = 0  # nodes explored counter
 
     while pq:
         _, current_cost, current_state = heapq.heappop(pq)
         nodes_explored += 1
 
-        # Check if we've reached the goal state
+        # check if we've reached the goal state
         if current_state == goal_state:
             path = []
             while current_state:
                 path.append(current_state)
                 current_state = parent_map[current_state]
-            return path[::-1], current_cost, nodes_explored  # Return path, depth, and nodes explored
+            return path[::-1], current_cost, nodes_explored  # return path, depth, and nodes explored
 
         visited.add(current_state)
 
         # Explore neighbors
         for neighbor in get_neighbors(current_state):
             if neighbor not in visited:
-                new_cost = current_cost + 1  # Cost to reach the neighbor (each move costs 1)
-                h_value = manhattan_distance(neighbor, goal_state)  # Heuristic value (Manhattan distance)
+                new_cost = current_cost + 1  # cost to reach the neighbor (1 cost)
+                h_value = manhattan_distance(neighbor, goal_state)  # heuristic value (Manhattan distance)
 
-                # Calculate f(n) = g(n) + h(n)
+                # calculate f(n) = g(n) + h(n)
                 f_value = new_cost + h_value
 
                 # If we found a cheaper path to the neighbor, update g and parent
@@ -89,13 +89,13 @@ def a_star(initial_state, goal_state):
     return None, None, nodes_explored  # No solution found
 
 # Initial and goal states
-initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)  # Initial puzzle state
-goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # Goal state
+initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)
+goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)
 
-# Run A* Search
+# A* Search
 solution_path, solution_depth, nodes_explored = a_star(initial_state, goal_state)
 
-# Print results
+#results
 if solution_path:
     print("Path to goal:")
     for step in solution_path:

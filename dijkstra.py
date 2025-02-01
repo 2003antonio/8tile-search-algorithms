@@ -1,22 +1,22 @@
 import heapq
 
-# Function to find the position of the blank space (0)
+# function to find the position of the blank space (0)
 def find_blank(state):
     return state.index(0)
 
-# Function to swap two positions in the puzzle
+# function to swap two positions in the puzzle
 def swap(state, pos1, pos2):
     state = list(state)
     state[pos1], state[pos2] = state[pos2], state[pos1]
     return tuple(state)
 
-# Function to generate all possible moves
+# function to generate all possible moves
 def get_neighbors(state):
     neighbors = []
     blank_pos = find_blank(state)
-    row, col = divmod(blank_pos, 3)  # Get row and column for the blank
+    row, col = divmod(blank_pos, 3)  # get row and column for the blank
 
-    # Possible moves: up, down, left, right
+    # possible moves: up, down, left, right
     moves = {
         "up": (row - 1, col),
         "down": (row + 1, col),
@@ -37,32 +37,32 @@ def dijkstra(initial_state, goal_state):
     pq = []
     heapq.heappush(pq, (0, initial_state))  # (path_cost, state)
 
-    # Dictionary to store the minimum cost to reach each state
+    # dictionary to store the minimum cost to reach each state
     cost_map = {initial_state: 0}
 
-    # To store the parent of each state for path reconstruction
+    #stores the parent of each state for path reconstruction
     parent_map = {initial_state: None}
 
-    # Keep track of explored nodes
+    # keep track of explored nodes
     nodes_explored = 0
 
     while pq:
         current_cost, current_state = heapq.heappop(pq)
         nodes_explored += 1
 
-        # Check if we've reached the goal state
+        # check if we've reached the goal state
         if current_state == goal_state:
             path = []
             while current_state:
                 path.append(current_state)
                 current_state = parent_map[current_state]
-            return path[::-1], current_cost, nodes_explored  # Return path, depth, and nodes explored
+            return path[::-1], current_cost, nodes_explored
 
-        # Explore neighbors
+        # explore neighbors
         for neighbor in get_neighbors(current_state):
             new_cost = current_cost + 1  # Cost to reach the neighbor (each move costs 1)
 
-            # If we found a cheaper path to the neighbor, update cost and parent
+            # if we found a cheaper path to the neighbor, update cost and parent
             if neighbor not in cost_map or new_cost < cost_map[neighbor]:
                 cost_map[neighbor] = new_cost
                 parent_map[neighbor] = current_state
@@ -71,13 +71,11 @@ def dijkstra(initial_state, goal_state):
     return None, None, nodes_explored  # No solution found
 
 # Initial and goal states
-initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)  # Initial puzzle state
-goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # Goal state
-
-# Run Dijkstra’s Algorithm
+initial_state = (1, 2, 3, 4, 6, 8, 7, 0, 5)
+goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+#Dijkstra’s Algorithm
 solution_path, solution_depth, nodes_explored = dijkstra(initial_state, goal_state)
 
-# Print results
 if solution_path:
     print("Path to goal:")
     for step in solution_path:
